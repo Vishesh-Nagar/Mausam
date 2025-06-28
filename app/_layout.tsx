@@ -4,6 +4,7 @@ import "./globals.css";
 export default function RootLayout() {
     return (
         <Stack 
+        
             screenOptions={{
                 headerTitleAlign: "center",
                 headerStyle: {
@@ -11,6 +12,19 @@ export default function RootLayout() {
                 },
                 headerTintColor: "#f3f4f6",
             }}
-        />
+        >
+            <Stack.Screen
+                name="(tabs)"
+                options={{
+                    headerShown: false,
+                }} 
+            />
+            <Stack.Screen
+                name="movies/[id]"
+                options={{
+                    headerShown: false,
+                }} 
+            />
+        </Stack>
     );
 }

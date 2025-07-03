@@ -11,7 +11,7 @@ const MovieCard = ({
     release_date,
 }: Movie) => {
     return (
-        <Link href={`/movies/${id}`} asChild className="w-full">
+        <Link href={`/movies/${id}`} asChild className="w-[30%]">
             <TouchableOpacity className="w-[30%]">
                 <Image
                     source={{

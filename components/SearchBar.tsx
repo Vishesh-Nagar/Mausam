@@ -1,15 +1,15 @@
-import { View, Text, Image, TextInput } from "react-native";
+import { View, Image, TextInput } from "react-native";
 import React from "react";
 import { icons } from "@/constants/icons";
 
-interface SearchBarProps {
+interface Props {
     placeholder?: string;
     onPress?: () => void;
     value?: string;
-    onChangeText: (text: string) => void;
+    onChangeText?: (text: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({
+const SearchBar: React.FC<Props> = ({
     placeholder,
     onPress,
     value,

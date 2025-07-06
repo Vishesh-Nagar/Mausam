@@ -31,7 +31,7 @@ const MovieCard = ({
                 <View className="flex-row items-center justify-start gap-x-1">
                     <Image source={icons.star} className="size-4" />
                     <Text className="text-white text-xs">
-                        {vote_average.toFixed(1)}
+                        {(vote_average ?? 0).toFixed(1)}
                     </Text>
                     <Text className="text-xs text-light-300 font-medium ml-5">
                         {new Date(release_date).getFullYear()}

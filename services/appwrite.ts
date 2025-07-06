@@ -14,24 +14,28 @@ export const updateSearchCount = async (query: string, movie: Movie) => {
         const result = await database.listDocuments(
             DATABASE_ID,
             COLLECTION_ID,
-            [Query.equal("searchTerm", query)]
+            [Query.equal("movie_id", movie.id)]
         );
 
         if (result.documents.length > 0) {
-            // console.log("Documents found: ", result.documents);
             const existingMovie = result.documents[0];
-            await database.updateDocument(
+            const newCount =
+                (typeof existingMovie.count === "number"
+                    ? existingMovie.count
+                    : 0) + 1;
+
+            const updatedDoc = await database.updateDocument(
                 DATABASE_ID,
                 COLLECTION_ID,
                 existingMovie.$id,
                 {
-                    count: existingMovie.searchCount + 1,
-                    lastSearchedMovie: movie.id,
+                    count: newCount,
                 }
             );
+
+            return updatedDoc;
         } else {
-            // console.log("No documents found, creating a new one.");
-            await database.createDocument(
+            const newDoc = await database.createDocument(
                 DATABASE_ID,
                 COLLECTION_ID,
                 ID.unique(),
@@ -43,15 +47,26 @@ export const updateSearchCount = async (query: string, movie: Movie) => {
                     title: movie.title,
                 }
             );
-            // console.log("New document created successfully.");
-        }
-        if (result && result.documents && result.documents.length > 0) {
-            return result.documents[0];
-        } else {
-            return "Document created";
+            return newDoc;
         }
     } catch (error) {
-        // console.error("Error updating search count:", error);
+        console.error("Error in updateSearchCount:", error);
         throw error;
+    }
+};
+
+export const getTrendingMovies = async (): Promise<
+    TrendingMovie[] | undefined
+> => {
+    try {
+        const result = await database.listDocuments(
+            DATABASE_ID,
+            COLLECTION_ID,
+            [Query.limit(5), Query.orderDesc("count")]
+        );
+        return result.documents as unknown as TrendingMovie[];
+    } catch (error) {
+        console.error(error);
+        return undefined;
     }
 };
